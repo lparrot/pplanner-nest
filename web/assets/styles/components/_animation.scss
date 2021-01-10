@@ -1,0 +1,61 @@
+.rotate-in-center-enter-active {
+  animation: rotate-in-center .5s;
+}
+
+.rotate-in-center-leave-active {
+  animation: rotate-in-center .5s reverse;
+}
+
+.slide-right-enter-active {
+  animation: slide-right .5s;
+}
+
+.slide-right-leave-active {
+  animation: slide-right .5s reverse;
+}
+
+.tracking-in-expand-enter-active {
+  animation: tracking-in-expand .5s;
+}
+
+.tracking-in-expand-leave-active {
+  animation: tracking-in-expand .5s reverse;
+}
+
+@keyframes rotate-in-center {
+  0% {
+    transform: rotate(-360deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: rotate(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes tracking-in-expand {
+  0% {
+    letter-spacing: -.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: .6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
