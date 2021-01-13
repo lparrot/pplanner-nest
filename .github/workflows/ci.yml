@@ -29,6 +29,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
 
+      - name: Run a multi-line script
+        run: |
+          tar -zcvf deploy.tar server/dist/ server/package.json server/tsconfig.build.json server/tsconfig.json
+
       - name: Copy artifact to NAS
         uses: appleboy/scp-action@master
         with:
@@ -36,7 +40,7 @@ jobs:
           username: ${{ secrets.NAS_USERNAME }}
           password: ${{ secrets.NAS_PASSWORD }}
           port: ${{ secrets.NAS_PORT }}
-          source: "server/dist/,server/package.json,server/tsconfig*.json"
+          source: "deploy.tar"
           target: "/volume1/apps/pplanner-nest/files"
           rm: true
           strip_components: 1
