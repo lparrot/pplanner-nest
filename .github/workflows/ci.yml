@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.NAS_USERNAME }}
           password: ${{ secrets.NAS_PASSWORD }}
           port: ${{ secrets.NAS_PORT }}
-          source: "server/dist,server/package.json,,server/tsconfig*.json"
+          source: "server/dist/*,server/package.json,,server/tsconfig*.json"
           target: "/volume1/apps/pplanner-nest/files"
           rm: true
           strip_components: 1
