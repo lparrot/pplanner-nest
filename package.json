@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install:server": "cd server && npm install",
+    "install:web": "cd web && npm install",
+    "install": "npm run install:server && npm run install:web",
     "dev:server": "cd server && npm run start:dev",
     "dev:web": "cd web && npm run dev",
     "build:server": "cd server && npm run build",
