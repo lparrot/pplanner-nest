@@ -5,3 +5,5 @@ storybook-static
 
 node_modules
 dist
+
+tsconfig.build.tsbuildinfo

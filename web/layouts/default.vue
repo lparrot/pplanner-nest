@@ -30,6 +30,7 @@
 
     <div class="flex flex-col h-full w-full bg-white px-4 py-6">
       <p-button @click="show = !show">Toggle</p-button>
+      {{ $store.state.auth }}
       <nuxt/>
     </div>
   </div>

@@ -1,0 +1,51 @@
+name: CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache NPM repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Using NodeJS ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+
+      - name: Copy artifact to NAS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.NAS_HOST }}
+          username: ${{ secrets.NAS_USERNAME }}
+          password: ${{ secrets.NAS_PASSWORD }}
+          port: ${{ secrets.NAS_PORT }}
+          source: "server/dist,server/package.json,,server/tsconfig*.json"
+          target: "/volume1/apps/pplanner-nest/files"
+          rm: true
+          strip_components: 1
+
+      - name: Restart docker container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.NAS_HOST }}
+          username: ${{ secrets.NAS_USERNAME }}
+          password: ${{ secrets.NAS_PASSWORD }}
+          port: ${{ secrets.NAS_PORT }}
+          script: echo ${{ secrets.NAS_PASSWORD }} | sudo -S /usr/local/bin/docker restart pplanner

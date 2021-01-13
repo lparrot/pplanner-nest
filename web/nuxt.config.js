@@ -5,6 +5,12 @@ export default {
   // Disable server-side rendering (https://go.nuxtjs.dev/ssr-mode)
   ssr: false,
 
+  target: 'static',
+
+  generate: {
+    dir: '../server/dist/client'
+  },
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: config.title,
@@ -50,6 +56,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -65,18 +72,53 @@ export default {
     },
   },
 
+  auth: {
+    cookie: false,
+    strategies: {
+      local: {
+        token: {
+          property: 'access_token',
+        },
+        user: {
+          property: false,
+        },
+        endpoints: {
+          login: { url: '/auth/login', method: 'post' },
+          user: { url: '/auth/profile', method: 'get' },
+        },
+      },
+    },
+    redirect: {
+      login: '/login',
+      logout: '/login',
+      callback: false,
+      home: '/',
+    },
+  },
+
   publicRuntimeConfig: {
     app: config,
   },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    extractCSS: true,
+
     quiet: !isDev,
     /*
     ** You can extend webpack config here
     */
     extend (config, ctx) {
       config.devtool = ctx.isClient ? 'eval-source-map' : 'inline-source-map'
+    },
+
+    postcss: {
+      preset: {
+        features: {
+          // Fixes: https://github.com/tailwindcss/tailwindcss/issues/1190#issuecomment-546621554
+          'focus-within-pseudo-class': false,
+        },
+      },
     },
   },
 }
