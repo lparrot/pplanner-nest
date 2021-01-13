@@ -10,68 +10,59 @@
       </div>
     </transition>
 
-    <div class="">
-      <table class="table table-bordered">
-        <thead class="thead-dark">
-        <tr>
-          <th scope="col">Firstname</th>
-          <th scope="col">Lastname</th>
-          <th scope="col">Email</th>
-          <th scope="col">Phone</th>
-          <th scope="col">Address</th>
-          <th scope="col">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="user in users" :key="user._id">
-          <td>{{ user.first_name }}</td>
-          <td>{{ user.last_name }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user.address }}</td>
-          <td>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group" style="margin-bottom: 20px">
-                <router-link
-                  :to="{ name: 'edit', params: { id: user._id } }"
-                  class="btn btn-sm btn-outline-secondary"
-                >Edit User
-                </router-link
-                >
-                <button
-                  class="btn btn-sm btn-outline-secondary"
-                  @click="deleteUser(user._id)"
-                >
-                  Delete User
-                </button>
-              </div>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+    <table class="min-w-full table-auto">
+      <thead class="justify-between">
+      <tr class="bg-gray-800">
+        <th class="px-16 py-2 text-gray-300">Firstname</th>
+        <th class="px-16 py-2 text-gray-300">Lastname</th>
+        <th class="px-16 py-2 text-gray-300">Email</th>
+        <th class="px-16 py-2 text-gray-300">Phone</th>
+        <th class="px-16 py-2 text-gray-300">Address</th>
+        <th class="px-16 py-2 text-gray-300">Actions</th>
+      </tr>
+      </thead>
+      <tbody class="bg-gray-200">
+      <tr v-for="user in users" :key="user._id" class="bg-white border-4 border-gray-200">
+        <td class="px-16 py-2">{{ user.first_name }}</td>
+        <td class="px-16 py-2">{{ user.last_name }}</td>
+        <td class="px-16 py-2">{{ user.email }}</td>
+        <td class="px-16 py-2">{{ user.phone }}</td>
+        <td class="px-16 py-2">{{ user.address }}</td>
+        <td class="px-16 py-2">
+          <div class="flex justify-center">
+            <router-link :to="{ name: 'edit', params: { id: user._id } }" class="p-button primary rounded-full" tag="button">
+              <i class="fas fa-pencil-alt"></i>
+            </router-link>
+            <button class="p-button danger rounded-full" @click="deleteUser(user._id)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script lang='ts'>
 import {Component, Vue} from "nuxt-property-decorator";
 
-@Component
+@Component({
+  middleware: 'auth'
+})
 export default class PageIndex extends Vue {
   public users: any[] = [];
 
-  async created() {
+  async fetch() {
     await this.fetchUsers();
   }
 
   async fetchUsers() {
-    this.users = await this.$axios.$get(`/user`);
+    this.users = await this.$axios.$get(`/users`);
   }
 
   async deleteUser(id) {
-    const res = await this.$axios.$delete(`/user?id=${id}`);
-    console.log(res);
+    const res = await this.$axios.$delete(`/users?id=${id}`);
     await this.fetchUsers();
   }
 }

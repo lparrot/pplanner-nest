@@ -2,5 +2,5 @@ $variants: 'primary', 'secondary', 'success', 'info', 'warn', 'danger';
 $sizes: 'sm', 'md', 'lg', 'xl', '2xl';
 
 html, body, #__nuxt, #__layout {
-  @apply h-full;
+  @apply h-full text-sm;
 }

@@ -10,6 +10,12 @@ module.exports = {
       'src/**/*.scss',
       'src/**/*.vue',
     ],
+    options: {
+      safelist: [
+        /^bg-/i,
+        /^text-/i,
+      ],
+    },
   },
   darkMode: false, // or 'media' or 'class'
   theme: {
